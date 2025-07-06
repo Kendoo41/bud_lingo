@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import Image from "next/image";
+import path from "path";
 
 type Props = {
   label: string;

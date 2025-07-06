@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useTransition, useState } from "react";
 import Card from "./Card";
 import { upsertUserProgress } from "@/actions/user-progress";
+import { toast } from "sonner";
 
 type Props = {
   courses: (typeof courses.$inferSelect)[];
@@ -25,7 +26,13 @@ export const List = ({ courses, activeCourseId }: Props) => {
     }
 
     startTransition(async () => {
-      await upsertUserProgress(id);
+      try {
+        await upsertUserProgress(id);
+      } catch (err: any) {
+        if (err.message !== "NEXT_REDIRECT") {
+          toast.error(err instanceof Error ? err.message : String(err));
+        }
+      }
     });
   };
 

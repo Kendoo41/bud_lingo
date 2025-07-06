@@ -10,6 +10,7 @@ const LearnPage = async () => {
 
   const [userProgress] = await Promise.all([userProgressData]);
 
+  // NOTE: this guard technique is IMPORTANT to remove the undefined
   if (!userProgress || !userProgress.activeCourse) {
     redirect("/courses")
   }
@@ -23,9 +24,9 @@ const LearnPage = async () => {
       </FeedWrapper>
       <StickyWrapper>
         <UserProgress
-          activeCourse={{ title: `${activeCourse.title}`, imageSrc: `${activeCourse.imageSrc}` }}
-          hearts={5}
-          points={100}
+          activeCourse={activeCourse}
+          hearts={userProgress.hearts}
+          points={userProgress.points}
           hasActiveSubscription={false}
         />
       </StickyWrapper>
