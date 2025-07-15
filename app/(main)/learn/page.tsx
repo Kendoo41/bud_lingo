@@ -10,7 +10,6 @@ import {
   getUserProgress,
 } from "@/db/queries";
 import { redirect } from "next/navigation";
-import { devIndicatorServerState } from "next/dist/server/dev/dev-indicator-server-state";
 import Unit from "./unit";
 import { auth } from "@clerk/nextjs/server";
 

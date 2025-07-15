@@ -74,37 +74,112 @@ const main = async () => {
     ]);
 
     await db.insert(schema.challenges).values([
-      { id: 1, 
+      {
         lessonId: 1, // Nouns
         type: "SELECT", 
         order: 1,
-        question: 'Which one of these is "the man"'
+        question: 'Which one of these is "the boy"'
       },
-      { id: 2, 
+      {
+        lessonId: 1, // Nouns
+        type: "ASSIST", 
+        order: 2,
+        question: 'The girl'
+      },
+      {
         lessonId: 1, // Nouns
         type: "SELECT", 
-        order: 2,
-        question: 'Which one of these is "the woman"'
+        order: 3,
+        question: 'The zombie'
+      },
+      {
+        lessonId: 2, // Nouns
+        type: "SELECT", 
+        order: 4,
+        question: 'The zombie'
       },
     ]);
 
     await db.insert(schema.challengeOptions).values([
-      { id: 1, 
+      {
         challengeId: 1, // Nouns
         imageSrc: "/boy.svg", 
         audioSrc: "/es_boy.mp3", 
         correct: true,
         text: "el chico"
       },
-      { id: 2, 
+      {
         challengeId: 1, // Nouns
         imageSrc: "/girl.svg", 
         audioSrc: "/es_girl.mp3", 
         correct: false,
         text: "la chica"
       },
-      { id: 3,
+      {
         challengeId: 1, // Nouns
+        imageSrc: "/zombie.svg", 
+        audioSrc: "/es_zombie.mp3", 
+        correct: false,
+        text: "el zombi"
+      },
+      {
+        challengeId: 2, // Nouns
+        audioSrc: "/es_boy.mp3", 
+        correct: false,
+        text: "el chico"
+      },
+      {
+        challengeId: 2, // Nouns
+        audioSrc: "/es_girl.mp3", 
+        correct: true,
+        text: "la chica"
+      },
+      {
+        challengeId: 2, // Nouns
+        audioSrc: "/es_zombie.mp3", 
+        correct: false,
+        text: "el zombi"
+      },
+      {
+        challengeId: 3, // Nouns
+        imageSrc: "/boy.svg", 
+        audioSrc: "/es_boy.mp3", 
+        correct: false,
+        text: "el chico"
+      },
+      {
+        challengeId: 3, // Nouns
+        imageSrc: "/girl.svg", 
+        audioSrc: "/es_girl.mp3", 
+        correct: false,
+        text: "la chica"
+      },
+      {
+        challengeId: 3, // Nouns
+        imageSrc: "/zombie.svg", 
+        audioSrc: "/es_zombie.mp3", 
+        correct: true,
+        text: "el zombi"
+      },
+    ]);
+
+    await db.insert(schema.challengeOptions).values([
+      {
+        challengeId: 4, // Nouns
+        imageSrc: "/boy.svg", 
+        audioSrc: "/es_boy.mp3", 
+        correct: true,
+        text: "el chico"
+      },
+      {
+        challengeId: 4, // Nouns
+        imageSrc: "/girl.svg", 
+        audioSrc: "/es_girl.mp3", 
+        correct: false,
+        text: "la chica"
+      },
+      {
+        challengeId: 4, // Nouns
         imageSrc: "/zombie.svg", 
         audioSrc: "/es_zombie.mp3", 
         correct: false,

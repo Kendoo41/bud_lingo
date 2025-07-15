@@ -29,6 +29,7 @@ const Unit = ({
       <div className="flex items-center flex-col relative">
         {lessons.map((lesson, index) => {
           const isCurrent = lesson.id === activeLesson?.id;
+          console.log(`This is the value activeLessonId: ${activeLesson?.id}`)
           const isLocked = !lesson.completed && !isCurrent;
           return (
           <LessonButton
