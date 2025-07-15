@@ -74,25 +74,25 @@ const main = async () => {
     ]);
 
     await db.insert(schema.challenges).values([
-      {
+      { id: 1,
         lessonId: 1, // Nouns
         type: "SELECT", 
         order: 1,
         question: 'Which one of these is "the boy"'
       },
-      {
+      { id: 2,
         lessonId: 1, // Nouns
         type: "ASSIST", 
         order: 2,
         question: 'The girl'
       },
-      {
+      { id: 3,
         lessonId: 1, // Nouns
         type: "SELECT", 
         order: 3,
         question: 'The zombie'
       },
-      {
+      { id: 4,
         lessonId: 2, // Nouns
         type: "SELECT", 
         order: 4,

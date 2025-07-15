@@ -43,7 +43,7 @@ const LessonButton = ({
   const isFirst = index === 0;
   const isLast = index === totalCount;
   const isCompleted = !current && !locked;
-  // console.log(`This is the value current: ${current}`)
+  //console.log(`This is the value of isCompleted: ${isCompleted}`)
 
   const Icon = isCompleted ? Check : isLast ? Crown : Star;
   const href = isCompleted ? `/lesson/${id}` : "/lesson";
