@@ -1,0 +1,1 @@
+CREATE TYPE "public"."challenge_type" AS ENUM('SELECT', 'ASSIST');

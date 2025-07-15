@@ -1,0 +1,1 @@
+ALTER TABLE "units" DROP COLUMN "image_src";

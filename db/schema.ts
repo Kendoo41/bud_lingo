@@ -30,7 +30,6 @@ export const units = pgTable("units", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
   description: text("description").notNull(), // Learn the basic of Spanish
-  imageSrc: text("image_src").notNull(),
   courseId: integer("course_id")
     .references(() => courses.id, {
       onDelete: "cascade",
@@ -58,34 +57,30 @@ export const lessons = pgTable("lessons", {
       onDelete: "cascade",
     })
     .notNull(),
-  courseId: integer("course_id")
-    .references(() => courses.id, {
-      onDelete: "cascade",
-    })
-    .notNull(),
   order: integer("order").notNull(),
 });
 
 export const lessonsRelations = relations(lessons, ({ one, many }) => ({
   unit: one(units, {
-    fields: [lessons.courseId],
+    fields: [lessons.unitId],
     references: [units.id],
   }),
+  challenges: many(challenges),
 }));
 
 //==================================================
 // challenge
 //==================================================
-const challengesEnum = pgEnum("type", ["SELECT", "ASSIST"]);
+export const challengesEnum = pgEnum("challenge_type", ["SELECT", "ASSIST"]);
+
 export const challenges = pgTable("challenges", {
   id: serial("id").primaryKey(),
-  title: text("title").notNull(),
   lessonId: integer("lesson_id")
     .references(() => lessons.id, {
       onDelete: "cascade",
     })
     .notNull(),
-  type: challengesEnum("type").notNull(),
+  type: challengesEnum("challenge_type").notNull(),
   question: text("question").notNull(),
   order: integer("order").notNull(), //Store challenges by harder or arbitrarer value
 });
@@ -104,7 +99,6 @@ export const challengesRelations = relations(challenges, ({ one, many }) => ({
 //==================================================
 export const challengeOptions = pgTable("challengeOptions", {
   id: serial("id").primaryKey(),
-  title: text("title").notNull(),
   challengeId: integer("challenge_id")
     .references(() => challenges.id, {
       onDelete: "cascade",
@@ -112,9 +106,8 @@ export const challengeOptions = pgTable("challengeOptions", {
     .notNull(),
   text: text("text").notNull(),
   correct: boolean("correct").notNull(),
-  order: integer("order").notNull(), //Store challenges by harder or arbitrarer value
   imageSrc: text("image_src"),
-  audioSrc: text("image_src"),
+  audioSrc: text("audio_src"),
 });
 
 export const challengeOptionsRelations = relations(
