@@ -9,6 +9,8 @@ import { Footer } from "./footer";
 import { currentUser } from "@clerk/nextjs/server";
 import { upsertChallengeProgress } from "@/actions/challenge-progress";
 import { toast } from "sonner";
+import { reduceHearts } from "@/actions/user-progress";
+import { useAudio } from "react-use";
 
 type Props = {
   initialPercentage: number;
@@ -27,8 +29,13 @@ const Quiz = ({
   initialLessonChallenges,
   userSubscription,
 }: Props) => {
+  const [correctAudio, _c, correctControls] = useAudio({ src: "/correct.wav" });
+  const [incorrectAudio, _i, incorrectControls] = useAudio({
+    src: "/incorrect.wav",
+  });
+  //const [finishAudio, _f, finishControls] = useAudio({ src: "/finish.wav" });
   // What is the benefit of using this hook
-  const [isPending, startTransition] = useTransition();
+  const [pending, startTransition] = useTransition();
 
   const [hearts, setHearts] = useState(initialHearts);
   const [percentage, setPercentage] = useState(initialPercentage);
@@ -89,6 +96,7 @@ const Quiz = ({
             if (response?.error === "hearts") {
               console.error("Missing hearts");
             }
+            correctControls.play();
             setStatus("correct");
             setPercentage((prev) => prev + 100 / challenges.length);
 
@@ -99,9 +107,34 @@ const Quiz = ({
           .catch(() => toast.error("Something wentwrong, please try again"));
       });
     } else {
-      console.error("Incorrect Option");
+      startTransition(() => {
+        reduceHearts(challenge.id)
+          .then((response) => {
+            if (response?.error === "heart") {
+              console.error("Missing hearts");
+              return;
+            }
+            incorrectControls.play();
+            setStatus("wrong");
+
+            if (!response?.error) {
+              setHearts((prev) => Math.max(prev - 1, 0));
+            }
+          })
+          .catch(() => toast.error("Something went wrong. Please try again"));
+      });
     }
   };
+
+
+  // TODO: remove true
+  if (true || !challenge) {
+    return (
+      <div className="flex flex-col gap-y-4 lg:gap-y-8 ">
+
+      </div>
+    )
+  }
 
   const title =
     challenge.type === "ASSIST"
@@ -110,6 +143,8 @@ const Quiz = ({
 
   return (
     <>
+      {correctAudio}
+      {incorrectAudio}
       <Header
         hearts={hearts}
         percentage={percentage}
@@ -130,14 +165,18 @@ const Quiz = ({
                 onSelect={onSelect}
                 status={status}
                 selectedOption={selectedOption}
-                disabled={false}
+                disabled={pending}
                 type={challenge.type}
               />
             </div>
           </div>
         </div>
       </div>
-      <Footer disabled={!selectedOption} status={status} onCheck={onContinue} />
+      <Footer
+        disabled={pending || !selectedOption}
+        status={status}
+        onCheck={onContinue}
+      />
     </>
   );
 };

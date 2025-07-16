@@ -168,7 +168,7 @@ const main = async () => {
         challengeId: 4, // Nouns
         imageSrc: "/boy.svg", 
         audioSrc: "/es_boy.mp3", 
-        correct: true,
+        correct: false,
         text: "el chico"
       },
       {
@@ -182,7 +182,7 @@ const main = async () => {
         challengeId: 4, // Nouns
         imageSrc: "/zombie.svg", 
         audioSrc: "/es_zombie.mp3", 
-        correct: false,
+        correct: true,
         text: "el zombi"
       },
     ]);
