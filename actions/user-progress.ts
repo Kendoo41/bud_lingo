@@ -13,6 +13,8 @@ import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+// TODO: move to common file
+
 export const upsertUserProgress = async (courseId: number) => {
   const { userId } = await auth();
   const user = await currentUser();
@@ -112,4 +114,55 @@ export const reduceHearts = async (challengedId: number) => {
   revalidatePath("/quests");
   revalidatePath("/leaderboard");
   revalidatePath(`/lesson/${lessonId}`);
+};
+
+export const refillHearts = async () => {
+  const currentUserProgress = await getUserProgress();
+
+  if (!currentUserProgress) {
+    throw new Error("user progress not found");
+  }
+
+  if (currentUserProgress.hearts === 5) {
+    throw new Error("Hearts are already full");
+  }
+
+  if (currentUserProgress.points < POINTS_TO_REFILL) {
+    throw new Error("Not enough points");
+  }
+
+  // console.log(`points: ${currentUserProgress.points - POINTS_TO_REFILL}`);
+
+  try {
+    await db
+      .update(userProgress)
+      .set({
+        hearts: 5,
+        points: currentUserProgress.points - POINTS_TO_REFILL,
+      })
+      .where(eq(userProgress.userId, currentUserProgress.userId));
+    
+  } catch (error) {
+    console.log(`====================================================`);
+    console.log(`                      TESTHERE`);
+    console.log(`====================================================`);
+    console.log(`points userprogress: ${currentUserProgress.points}`);
+    console.log(`points to refill: ${POINTS_TO_REFILL}`);
+    console.log(`====================================================`);
+    // console.log(`points: ${currentUserProgress.points - POINTS_TO_REFILL}`);
+    
+  }
+
+  await db
+    .update(userProgress)
+    .set({
+      hearts: 5,
+      points: currentUserProgress.points - POINTS_TO_REFILL,
+    })
+    .where(eq(userProgress.userId, currentUserProgress.userId));
+
+  revalidatePath("/shop");
+  revalidatePath("/learn");
+  revalidatePath("/quests");
+  revalidatePath("/leaderboard");
 };
