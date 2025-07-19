@@ -1,5 +1,6 @@
 "use server";
 
+import { POINTS_TO_REFILL } from "@/app/common/constant";
 import { db } from "@/db/drizzle";
 import { getCoursesById, getUserProgress } from "@/db/queries";
 import {
@@ -12,8 +13,7 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-
-// TODO: move to common file
+import { toast } from "sonner";
 
 export const upsertUserProgress = async (courseId: number) => {
   const { userId } = await auth();
@@ -129,28 +129,6 @@ export const refillHearts = async () => {
 
   if (currentUserProgress.points < POINTS_TO_REFILL) {
     throw new Error("Not enough points");
-  }
-
-  // console.log(`points: ${currentUserProgress.points - POINTS_TO_REFILL}`);
-
-  try {
-    await db
-      .update(userProgress)
-      .set({
-        hearts: 5,
-        points: currentUserProgress.points - POINTS_TO_REFILL,
-      })
-      .where(eq(userProgress.userId, currentUserProgress.userId));
-    
-  } catch (error) {
-    console.log(`====================================================`);
-    console.log(`                      TESTHERE`);
-    console.log(`====================================================`);
-    console.log(`points userprogress: ${currentUserProgress.points}`);
-    console.log(`points to refill: ${POINTS_TO_REFILL}`);
-    console.log(`====================================================`);
-    // console.log(`points: ${currentUserProgress.points - POINTS_TO_REFILL}`);
-    
   }
 
   await db
