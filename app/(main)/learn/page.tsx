@@ -12,6 +12,10 @@ import {
 import { redirect } from "next/navigation";
 import Unit from "./unit";
 import { auth } from "@clerk/nextjs/server";
+import { Promo } from "@/components/promo";
+import { userProgressRelations } from "@/db/schema";
+import { Quests } from "@/components/quests";
+import { quests } from "@/app/common/constant";
 
 const LearnPage = async () => {
   const userId = await auth();
@@ -69,6 +73,8 @@ const LearnPage = async () => {
           points={userProgress.points}
           hasActiveSubscription={false}
         />
+        <Promo />
+        <Quests points={userProgress.points} />
       </StickyWrapper>
     </div>
   );

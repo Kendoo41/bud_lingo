@@ -8,35 +8,7 @@ import { Items } from "./items";
 import { use } from "react";
 import { Divide } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-
-//==================================================
-// NOTE: Important technique for testing data
-//==================================================
-// Implement data out side of page tsx, above the page
-// STATIC DATA
-//==================================================
-const quests = [
-  {
-    title: "Earn 20XP",
-    value: 20,
-  },
-  {
-    title: "Earn 50XP",
-    value: 50,
-  },
-  {
-    title: "Earn 100XP",
-    value: 100,
-  },
-  {
-    title: "Earn 500XP",
-    value: 500,
-  },
-  {
-    title: "Earn 1000XP",
-    value: 1000,
-  },
-];
+import { quests } from "@/app/common/constant";
 
 const QuestsPage = async () => {
   const userProgressData = getUserProgress();
@@ -86,8 +58,8 @@ const QuestsPage = async () => {
                   <p className="text-neutral-700 text-xl font-bold">
                     {quest.title}
                   </p>{" "}
+                  <Progress value={progress} className="h-3" />
                 </div>
-              <Progress value={progress} className="h-3"/>
               </div>
             );
           })}
