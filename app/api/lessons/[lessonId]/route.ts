@@ -1,12 +1,12 @@
 import { db } from "@/db/drizzle";
-import { courses } from "@/db/schema";
+import { lessons } from "@/db/schema";
 import { getIsAdmin } from "@/lib/admin";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (
   req: Request,
-  { params }: { params: { courseId: number } }
+  { params }: { params: { lessonId: number } }
 ) => {
   const isAdmin = await getIsAdmin();
 
@@ -14,10 +14,10 @@ export const GET = async (
     return new NextResponse("Unauthorized");
   }
 
-  const { courseId } = await params;
+  const { lessonId } = await params;
 
-  const data = await db.query.courses.findFirst({
-    where: eq(courses.id, courseId),
+  const data = await db.query.lessons.findFirst({
+    where: eq(lessons.id, lessonId),
   });
 
   return NextResponse.json(data);
@@ -25,7 +25,7 @@ export const GET = async (
 
 export const PUT = async (
   req: Request,
-  { params }: { params: { courseId: number } }
+  { params }: { params: { lessonId: number } }
 ) => {
   const isAdmin = await getIsAdmin();
 
@@ -35,14 +35,14 @@ export const PUT = async (
     return new NextResponse("Unauthorized");
   }
 
-  const { courseId } = await params;
+  const { lessonId } = await params;
 
   const data = await db
-    .update(courses)
+    .update(lessons)
     .set({
       ...body,
     })
-    .where(eq(courses.id, courseId))
+    .where(eq(lessons.id, lessonId))
     .returning();
 
   return NextResponse.json(data[0]);
@@ -50,7 +50,7 @@ export const PUT = async (
 
 export const DELETE = async (
   req: NextRequest,
-  { params }: { params: { courseId: number } }
+  { params }: { params: { lessonId: number } }
 ) => {
   const isAdmin = await getIsAdmin();
 
@@ -58,11 +58,11 @@ export const DELETE = async (
     return new NextResponse("Unauthorized");
   }
 
-  const { courseId } = await params;
+  const { lessonId } = await params;
 
   const data = await db
-    .delete(courses)
-    .where(eq(courses.id, courseId))
+    .delete(lessons)
+    .where(eq(lessons.id, lessonId))
     .returning();
 
   return NextResponse.json(data[0]);
