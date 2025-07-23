@@ -1,6 +1,6 @@
 import { Create, Edit, SimpleForm, TextInput , required} from "react-admin";
 
-export const CourseEdit = () => {
+export const UnitEdit = () => {
   return (
     <Edit>
       <SimpleForm>
